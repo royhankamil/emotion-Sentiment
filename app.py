@@ -1,6 +1,4 @@
 import streamlit as st
-# import pandas as pd
-# import numpy as np
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pickle
@@ -12,29 +10,23 @@ nltk.download("punkt")
 nltk.download("punkt_tab")
 nltk.download("stopwords")
 
-# Load pre-trained model and supporting files
 def load_pickle(file_path):
     with open(file_path, 'rb') as file:
         return pickle.load(file)
     
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, 'models/sentiment_model.pkl')
-# preprocessing_path = os.path.join(BASE_DIR, 'models/preproccessing.pkl')
 vectorizer_path = os.path.join(BASE_DIR, 'models/vectorizer.pkl')
 
 model = load_pickle(model_path)
-# preprocessing = load_pickle(preprocessing_path)
 vectorizer = load_pickle(vectorizer_path)
 preprocessing = Preprocessing(vectorizer)
 
-# Function to predict sentiment based on input text
 def predict_sentiment(input_text):
-    # Preprocess and transform input to TF-IDF
     tfidf_vector = preprocessing.transform_to_tfidf(input_text)
     prediction = model.predict(tfidf_vector)[0]
     return prediction
 
-# Function to display WordCloud using Streamlit
 def display_wordcloud(column_data, title, colormap="Blues_r"):
     st.write(title)
     wordcloud = WordCloud(
@@ -49,14 +41,11 @@ def display_wordcloud(column_data, title, colormap="Blues_r"):
     ax.axis("off")
     st.pyplot(fig)
 
-# Title and subheader
 st.title("Emotion Sentiment Prediction")
 
 st.subheader("Comment")
-# Input area for user comment
 user_input = st.text_area("Input your comment here:")
 
-# Prediction button and result
 if st.button("Predict"):
     if user_input:
         sentiment_code = predict_sentiment(user_input)
